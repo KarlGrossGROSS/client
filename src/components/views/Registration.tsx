@@ -80,8 +80,8 @@ const Registration = () => {
                     />
                     <div className="login button-container">
                         <Button
-                            disabled={!username || !password}
-                            width="50%"
+                            disabled = {!username || !password}
+                            width = "50%"
                             onClick ={() => doRegistration()}
                         >
                             Sign up!
