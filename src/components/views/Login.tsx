@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { api, handleError } from "helpers/api";
+import React, {useEffect, useRef, useState} from "react";
+import { api, apiWithAuth, handleError } from "helpers/api";
 import User from "models/User";
 import {useNavigate} from "react-router-dom";
 import { Button } from "components/ui/Button";
@@ -34,34 +34,45 @@ FormField.propTypes = {
 };
 
 const Login = () => {
+  const userRef = useRef();
+  const errRef = useRef();
+
   const navigate = useNavigate();
-  const [name, setName] = useState<string>(null);
   const [username, setUsername] = useState<string>(null);
   const [password, setPassword] = useState<string>(null);
+  const [errMsg, setErrMsg] = useState('');
+  const [success, setSuccess] = useState(false);
+
 
   const doLogin = async () => {
     try {
-      const requestBody = JSON.stringify({ username, name, password });
+      const requestBody = JSON.stringify({ username, password });
       const response = await api.get("/users", requestBody);
+      console.log(response.data.token, response.data.userid)
+      // Throw an error if the user hasn't signed up
+
+
 
       // Get the returned user and update a new object.
       const user = new User(response.data);
 
       // Store the token into the local storage.
       localStorage.setItem("token", user.token);
+      localStorage.setItem("id", response.data.userid);
+
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
       navigate("/game");
     } catch (error) {
       alert(
-        `Something went wrong during the login: \n${handleError(error)}`
+        `Something went wrong during the login stage: \n${handleError(error)}`
       );
     }
   };
 
   const gotoregistration = () => {
     navigate("/registration")
-  }
+  };
 
 
   return (
@@ -74,26 +85,21 @@ const Login = () => {
             onChange={(un: string) => setUsername(un)}
           />
           <FormField
-            label="Name"
-            value={name}
-            onChange={(n) => setName(n)}
-          />
-          <FormField
               label="Password"
               value={password}
               onChange={(pw: string) => setPassword(pw)}
+
           />
           <div className="login button-container">
             <Button
-              disabled={!username || !name}
-              width="100%"
+              disabled={!username || !password}
+              width="50%"
               onClick={() => doLogin()}
             >
-              Login
+              Sign in
             </Button>
-            <br/>
             <Button onClick={() => gotoregistration()} >
-                Registration
+                Sign up
             </Button>
 
           </div>
