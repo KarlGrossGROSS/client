@@ -40,7 +40,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>(null);
   const [password, setPassword] = useState<string>(null);
-  const [errMsg, setErrMsg] = useState('');
+  const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
 
@@ -50,16 +50,11 @@ const Login = () => {
       const response = await api.get("/users", requestBody);
       console.log(response.data.token, response.data.userid)
       // Throw an error if the user hasn't signed up
-
-
-
       // Get the returned user and update a new object.
       const user = new User(response.data);
-
       // Store the token into the local storage.
       localStorage.setItem("token", user.token);
       localStorage.setItem("id", response.data.userid);
-
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
       navigate("/game");
@@ -69,12 +64,9 @@ const Login = () => {
       );
     }
   };
-
   const gotoregistration = () => {
     navigate("/registration")
   };
-
-
   return (
     <BaseContainer>
       <div className="login container">

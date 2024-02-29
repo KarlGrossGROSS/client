@@ -9,7 +9,6 @@ import PropTypes from "prop-types";
  */
 export const RegistrationGuard = () => {
     if (!localStorage.getItem("token")) {
-
         return <Outlet />;
     }
 
