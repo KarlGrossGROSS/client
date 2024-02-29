@@ -8,10 +8,15 @@ import PropTypes from "prop-types";
  * instead of 'export default' at the end of the file.
  */
 export const RegistrationGuard = () => {
+
     if (!localStorage.getItem("token")) {
+        // eslint-disable-next-line
+        // eslint-disable-next-line
         return <Outlet />;
+        // eslint-disable-next-line
     }
 
+// eslint-disable-next-line
     return <Navigate to="/login" replace />;
 };
 
