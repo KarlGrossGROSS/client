@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from "react";
-import { api, apiWithAuth, handleError } from "helpers/api";
+import React, {useState} from "react";
+import { api, handleError } from "helpers/api";
 import User from "models/User";
 import {useNavigate} from "react-router-dom";
 import { Button } from "components/ui/Button";
@@ -38,9 +38,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>(null);
   const [password, setPassword] = useState<string>(null);
-
-
-
   const doLogin = async () => {
     try {
       const requestBody = JSON.stringify({ username, password });
@@ -64,6 +61,7 @@ const Login = () => {
   const gotoregistration = () => {
     navigate("/registration")
   };
+
   return (
     <BaseContainer>
       <div className="login container">
@@ -74,10 +72,9 @@ const Login = () => {
             onChange={(un: string) => setUsername(un)}
           />
           <FormField
-              label="Password"
-              value={password}
-              onChange={(pw: string) => setPassword(pw)}
-
+            label="Password"
+            value={password}
+            onChange={(pw: string) => setPassword(pw)}
           />
           <div className="login button-container">
             <Button
