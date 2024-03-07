@@ -13,13 +13,11 @@ const GameRouter = () => {
 
         <Route path="" element={<Game />} />
 
-        <Route path = "profile/:userid/edit" element={<EditProfile />} />
 
-        <Route path="profile/:userid" element={<Profile />} />
 
         <Route path="dashboard" element={<Game />} />
 
-        <Route path="*" element={<Navigate to="dashboard" replace />} />
+
 
       </Routes>
    

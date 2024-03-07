@@ -1,17 +1,20 @@
 import { Spinner } from 'components/ui/Spinner';
 import BaseContainer from "components/ui/BaseContainer";
 import { api, handleError } from "../../helpers/api";
-import React, { useEffect, useState } from 'react';
-import {useParams, useNavigate, Navigate} from 'react-router-dom';
+import React, { useEffect, useState, useRef, forwardRef } from 'react';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { Button } from "components/ui/Button";
 import PropTypes from "prop-types";
-import DatePicker from "react-datepicker";
+import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+
+
 const FormField = props => {
+    console.log(props);
     return (
-        <div className="register field">
-            <label className="register label">
+        <div className="login field">
+            <label className="login label">
                 {props.label}
             </label>
             <input
@@ -23,31 +26,10 @@ const FormField = props => {
         </div>
     );
 };
+
 FormField.propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
-    onChange: PropTypes.func
-};
-
-const DateField = props => {
-    return (
-        <div className="register field">
-            <label className="register label">
-                {props.label}
-            </label>
-            <DatePicker
-                className="register input"
-                selected={props.value} // Use 'value' instead of 'selected'
-                onChange={(date) => props.onChange(date)} // Assuming 'onChange' is a function that handles date change
-                //type={"date"}/>
-            />
-        </div>
-    );
-};
-
-DateField.propTypes = {
-    label: PropTypes.string,
-    value: PropTypes.instanceOf(Date),
     onChange: PropTypes.func
 };
 
@@ -59,7 +41,6 @@ const EditProfile = () => {
     const [birthday, setBirthday] = useState(null);
 
     useEffect(() => {
-
         async function fetchData() {
             try {
                 const response = await api.get(`/users/${userid}`);
@@ -68,7 +49,6 @@ const EditProfile = () => {
                 console.error(`Error fetching user: ${handleError(error)}`);
             }
         }
-
         fetchData();
     }, [userid]);
 
@@ -78,64 +58,56 @@ const EditProfile = () => {
 
     async function save() {
         try {
-            console.log(localStorage.getItem("token"));
             const token = localStorage.getItem("token");
-            const requestBody = JSON.stringify({username, birthday, token});
-            await api.put(`/users/${userid}`, requestBody);
+            console.log(token)
+            console.log(userid)
+            const requestBody = JSON.stringify({username, birthday});
+            await api.put(`/users/${userid}`, requestBody, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log(userid);
             navigate(`/game/profile/${userid}`);
         } catch (error) {
             console.error(`Error editing user: ${handleError(error)}`);
         }
     }
 
+
     return (
-        <> {userid === localStorage.getItem('userid') ?
-
-            <BaseContainer className="game container">
-                <h1>Profile Page</h1>
-
-                {<div className="user-profile">
-                    <h2>Edit Profile</h2>
-                    <FormField
-                        label="Username"
-                        value={username}
-                        onChange={(un) => setUsername(un)}
-                    />
-                    <DateField
-                        label="Birthdate"
-                        value={birthday}
-                        onChange={un => setBirthday(un)}
-                    />
-                </div>}
-
-                <div className='button-container'>
-
-                    <Button
-                        width="100%"
-                        onClick={() => save()}
-                        disabled={!username && !birthday}
-                    >
-                        Save
-                    </Button>
-
-                    <Button
-
-                        width="100%"
-
-                        onClick={() => navigate("/game")}
-
-                    >
-
-                        Back to Overview
-
-                    </Button>
-
-                </div>
-
-
-            </BaseContainer>
-            : <Navigate to={"/"} /> }
-        </>
+        <BaseContainer className="game container">
+            <h1>Profile Page</h1>
+            <div className="user-profile">
+                <h2>Edit Profile</h2>
+                <FormField
+                    label="Username"
+                    value={username}
+                    onChange={(un) => setUsername(un)}
+                />
+                <FormField
+                    label="Birthday (YYYY-MM-DD)"
+                    value={birthday}
+                    onChange={(un) => setBirthday(un)}
+                />
+            </div>
+            <div className='button-container'>
+                <Button
+                    width="100%"
+                    onClick={() => save()}
+                    disabled={!username && !birthday}
+                >
+                    Save
+                </Button>
+                <Button
+                    width="100%"
+                    onClick={() => navigate("/game")}
+                >
+                    Back to Overview
+                </Button>
+            </div>
+        </BaseContainer>
     );
 };
+
 export default EditProfile;

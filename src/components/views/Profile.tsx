@@ -33,7 +33,8 @@ const Profile = () => {
         return <Spinner />;
     }
     const gotoEdit = () => {
-        navigate(`/game/profile/${userid}/edit`);
+        console.log("going to /game/profile/" + userid+"/edit");
+        navigate(`/game/profile/${userid}/edit`, {state:{userid:userid}} );
     }
 
 
