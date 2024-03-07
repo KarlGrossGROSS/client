@@ -43,6 +43,8 @@ const Registration = () => {
       const user = new User(response.data);
       // Store the token into the local storage.
       localStorage.setItem("token", user.token);
+      localStorage.setItem("userId", user.id);
+      localStorage.setItem("username", user.username);
       navigate("/game");
     } catch (error) {
       alert( `Something went wrong during the sign up: \n${handleError(error)}`

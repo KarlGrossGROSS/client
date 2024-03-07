@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { api, handleError } from "helpers/api";
 import { Spinner } from "components/ui/Spinner";
 import { Button } from "components/ui/Button";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Game.scss";
 import { User } from "types";
+
 
 const Player = ({ user }: { user: User }) => (
   <div className="player container">
@@ -22,7 +23,6 @@ Player.propTypes = {
 const Game = () => {
   // use react-router-dom's hook to access navigation, more info: https://reactrouter.com/en/main/hooks/use-navigate 
   const navigate = useNavigate();
-
   // define a state variable (using the state hook).
   // if this variable changes, the component will re-render, but the variable will
   // keep its value throughout render cycles.
@@ -31,9 +31,12 @@ const Game = () => {
   const [users, setUsers] = useState<User[]>(null);
 
   const logout = (): void => {
+    const realuser = localStorage.getItem("userId")
+    api.get("/logout/"+ realuser);
     localStorage.removeItem("token");
     navigate("/login");
   };
+
 
   // the effect hook can be used to react to change in your component.
   // in this case, the effect hook is only run once, the first time the component is mounted
@@ -55,13 +58,9 @@ const Game = () => {
 
         // This is just some data for you to see what is available.
         // Feel free to remove it.
-        console.log("request to:", response.request.responseURL);
-        console.log("status code:", response.status);
-        console.log("status text:", response.statusText);
-        console.log("requested data:", response.data);
 
         // See here to get more data.
-        console.log(response);
+        console.log(response.data);
       } catch (error) {
         console.error(
           `Something went wrong while fetching the users: \n${handleError(
@@ -82,20 +81,24 @@ const Game = () => {
 
   if (users) {
     content = (
-      <div className="game">
-        <ul className="game user-list">
-          {users.map((user: User) => (
-            <li key={user.id}>
-              <Player user={user} />
-            </li>
-          ))}
-        </ul>
-        <Button width="100%" onClick={() => logout()}>
-          Logout
-        </Button>
-      </div>
+        <div className="game">
+          <ul className="game user-list">
+            {users.map((user: User) => (
+                <li key={user.id}>
+                  {/* Button as list item */}
+                  <Link to={{ pathname: `profile/${user.id}`}}>
+                    <Player user={user} />
+                  </Link>
+                </li>
+            ))}
+          </ul>
+          <Button width="100%" onClick={() => logout()}>
+            Logout
+          </Button>
+        </div>
     );
   }
+
 
   return (
     <BaseContainer className="game container">

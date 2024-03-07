@@ -36,8 +36,8 @@ FormField.propTypes = {
 const Login = () => {
 
   const navigate = useNavigate();
-  const [username, setUsername] = useState<string>(null);
-  const [password, setPassword] = useState<string>(null);
+  const [username, getUsername] = useState<string>(null);
+  const [password, getPassword] = useState<string>(null);
   const doLogin = async () => {
     try {
       const requestBody = JSON.stringify({ username, password });
@@ -69,12 +69,12 @@ const Login = () => {
           <FormField
             label="Username"
             value={username}
-            onChange={(un: string) => setUsername(un)}
+            onChange={(un: string) => getUsername(un)}
           />
           <FormField
             label="Password"
             value={password}
-            onChange={(pw: string) => setPassword(pw)}
+            onChange={(pw: string) => getPassword(pw)}
           />
           <div className="login button-container">
             <Button
