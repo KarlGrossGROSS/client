@@ -27,8 +27,8 @@ const Profile = () => {
 
   if (!user) {return <Spinner />;
   }
-  const creationDate = new Date(user.creation_date).toLocaleDateString();
-  const birthday = user.birthday ? new Date(user.birthday).toLocaleDateString() : "";
+  const creationDate = user.creation_date;
+  const birthday = user.birthday ? user.birthday : "";
   const gotoEdit = () => {console.log("going to /game/profile/" + userid+"/edit");
     navigate(`/game/profile/${userid}/edit`, {state:{userid:userid}});
 

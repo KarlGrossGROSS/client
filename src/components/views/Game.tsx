@@ -46,6 +46,7 @@ const Game = () => {
     // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
     async function fetchData() {
       try {
+        const username = localStorage.getItem("username");
         const response = await api.get("/users");
 
         // delays continuous execution of an async operation for 1 second.
@@ -61,6 +62,7 @@ const Game = () => {
 
         // See here to get more data.
         console.log(response.data);
+        await api.put(`/status/${username}`)
       } catch (error) {
         console.error(
           `Something went wrong while fetching the users: \n${handleError(
