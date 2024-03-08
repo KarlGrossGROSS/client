@@ -21,13 +21,13 @@ Player.propTypes = {
 };
 
 const Game = () => {
-  // use react-router-dom's hook to access navigation, more info: https://reactrouter.com/en/main/hooks/use-navigate 
+  // use react-router-dom's hook to access navigation, more info: https://reactrouter.com/en/main/hooks/use-navigate
   const navigate = useNavigate();
   // define a state variable (using the state hook).
   // if this variable changes, the component will re-render, but the variable will
   // keep its value throughout render cycles.
   // a component can have as many state variables as you like.
-  // more information can be found under https://react.dev/learn/state-a-components-memory and https://react.dev/reference/react/useState 
+  // more information can be found under https://react.dev/learn/state-a-components-memory and https://react.dev/reference/react/useState
   const [users, setUsers] = useState<User[]>(null);
 
   const logout = (): void => {
@@ -41,7 +41,7 @@ const Game = () => {
   // the effect hook can be used to react to change in your component.
   // in this case, the effect hook is only run once, the first time the component is mounted
   // this can be achieved by leaving the second argument an empty array.
-  // for more information on the effect hook, please see https://react.dev/reference/react/useEffect 
+  // for more information on the effect hook, please see https://react.dev/reference/react/useEffect
   useEffect(() => {
     // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
     async function fetchData() {
@@ -81,21 +81,21 @@ const Game = () => {
 
   if (users) {
     content = (
-        <div className="game">
-          <ul className="game user-list">
-            {users.map((user: User) => (
-                <li key={user.id}>
-                  {/* Button as list item */}
-                  <Link to={{ pathname: `profile/${user.id}`}}>
-                    <Player user={user} />
-                  </Link>
-                </li>
-            ))}
-          </ul>
-          <Button width="100%" onClick={() => logout()}>
-            Logout
-          </Button>
-        </div>
+      <div className="game">
+        <ul className="game user-list">
+          {users.map((user: User) => (
+            <li key={user.id}>
+              {/* Button as list item */}
+              <Link to={{ pathname: `profile/${user.id}`}}>
+                <Player user={user} />
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Button width="100%" onClick={() => logout()}>
+        Logout
+        </Button>
+      </div>
     );
   }
 
@@ -104,7 +104,7 @@ const Game = () => {
     <BaseContainer className="game container">
       <h2>Happy Coding!</h2>
       <p className="game paragraph">
-        Get all users from secure endpoint:
+      Get all users from secure endpoint:
       </p>
       {content}
     </BaseContainer>
